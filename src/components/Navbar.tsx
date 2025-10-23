@@ -1,8 +1,20 @@
-import { Link } from "react-router-dom";
-import { Home, Building2, PlusCircle, User } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Building2, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
 
 const Navbar = () => {
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleAuthClick = () => {
+    if (user) {
+      signOut();
+    } else {
+      navigate("/login");
+    }
+  };
+
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4">
@@ -26,9 +38,18 @@ const Navbar = () => {
             </Link>
           </div>
 
-          <Button variant="default" size="sm" className="gap-2">
-            <User className="h-4 w-4" />
-            Login
+          <Button variant="default" size="sm" className="gap-2" onClick={handleAuthClick}>
+            {user ? (
+              <>
+                <LogOut className="h-4 w-4" />
+                Logout
+              </>
+            ) : (
+              <>
+                <User className="h-4 w-4" />
+                Login
+              </>
+            )}
           </Button>
         </div>
       </div>
