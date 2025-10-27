@@ -22,11 +22,11 @@ const Index = () => {
         
         <div className="container mx-auto relative z-10">
           <div className="text-center space-y-6 mb-10">
-            <h1 className="text-5xl md:text-7xl font-bold text-white drop-shadow-lg leading-tight">
-              Discover Your Ideal Home Away From Home
+            <h1 className="text-4xl md:text-6xl font-bold text-white">
+              Find Your Perfect Hostel
             </h1>
-            <p className="text-xl md:text-2xl text-white/95 max-w-3xl mx-auto font-medium drop-shadow-md">
-              Find the perfect hostel with verified, secure, and budget-friendly student accommodations tailored to your needs
+            <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
+              Discover safe, affordable, and student-friendly accommodations near your college
             </p>
           </div>
 
