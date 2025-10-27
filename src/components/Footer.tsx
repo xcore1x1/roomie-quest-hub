@@ -9,7 +9,7 @@ const Footer = () => {
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <Building2 className="h-6 w-6 text-primary" />
-              <span className="text-lg font-bold">HostelHub</span>
+              <span className="text-lg font-bold">Hostella</span>
             </div>
             <p className="text-sm text-muted-foreground">
               Find your perfect hostel near your college. Safe, affordable, and student-friendly accommodations.
@@ -52,7 +52,7 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Mail className="h-4 w-4" />
-                <span>info@hostelhub.com</span>
+                <span>info@hostella.com</span>
               </li>
               <li className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Phone className="h-4 w-4" />
@@ -69,7 +69,7 @@ const Footer = () => {
 
         <div className="border-t border-border mt-8 pt-8 text-center">
           <p className="text-sm text-muted-foreground">
-            © 2024 HostelHub. All rights reserved.
+            © 2024 Hostella. All rights reserved.
           </p>
         </div>
       </div>

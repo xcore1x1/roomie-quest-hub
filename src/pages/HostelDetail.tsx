@@ -150,7 +150,7 @@ const HostelDetail = () => {
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <Mail className="h-4 w-4 text-muted-foreground" />
-                    <span>owner@hostelhub.com</span>
+                    <span>owner@hostella.com</span>
                   </div>
                 </div>
               </div>

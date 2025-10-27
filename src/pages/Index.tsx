@@ -3,6 +3,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SearchBar from "@/components/SearchBar";
 import HostelCard from "@/components/HostelCard";
+import ThreeBackground from "@/components/ThreeBackground";
 import { Button } from "@/components/ui/button";
 import { mockHostels } from "@/data/mockHostels";
 import { ArrowRight, Shield, Search, Star } from "lucide-react";
@@ -12,6 +13,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <ThreeBackground />
       <Navbar />
 
       {/* Hero Section */}
@@ -82,7 +84,7 @@ const Index = () => {
             Own a Hostel?
           </h2>
           <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
-            List your hostel on HostelHub and reach thousands of students looking for accommodation.
+            List your hostel on Hostella and reach thousands of students looking for accommodation.
           </p>
           <Link to="/add-hostel">
             <Button size="lg" className="gap-2">

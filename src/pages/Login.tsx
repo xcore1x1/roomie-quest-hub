@@ -72,7 +72,7 @@ const Login = () => {
                 <Building2 className="h-8 w-8 text-primary" />
               </div>
             </div>
-            <CardTitle className="text-2xl font-bold">Welcome to HostelHub</CardTitle>
+            <CardTitle className="text-2xl font-bold">Welcome to Hostella</CardTitle>
             <CardDescription>
               Sign in to your account or create a new one
             </CardDescription>
