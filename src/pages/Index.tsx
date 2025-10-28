@@ -78,62 +78,94 @@ const Index = () => {
       </section>
 
       {/* Special Filters Section */}
-      <section className="py-16 px-4 bg-muted/50">
+      <section className="py-20 px-4 bg-gradient-to-br from-background via-muted/30 to-background">
         <div className="container mx-auto">
-          <h2 className="text-3xl font-bold text-foreground text-center mb-12">
-            We created special filters for you!
-          </h2>
+          <div className="text-center mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-3">
+              We created special Filters for YOU
+            </h2>
+            <p className="text-lg text-muted-foreground">Made for your kind of trip</p>
+          </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto mt-12">
             {/* Image Column */}
             <div className="flex justify-center">
               <img 
                 src={featurePic} 
                 alt="Hostel accommodation" 
-                className="rounded-lg shadow-lg w-full max-w-md"
+                className="rounded-2xl shadow-2xl w-full max-w-lg hover:scale-105 transition-transform duration-300"
               />
             </div>
             
             {/* Features Column */}
-            <div className="space-y-6">
-              <div className="flex items-start gap-4 p-4 bg-background rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                <DollarSign className="h-8 w-8 text-primary flex-shrink-0 mt-1" />
+            <div className="space-y-5">
+              <div className="flex items-center gap-4 group cursor-pointer">
+                <div className="bg-gradient-to-br from-green-400 to-green-600 rounded-full p-4 flex-shrink-0 group-hover:scale-110 transition-transform">
+                  <DollarSign className="h-7 w-7 text-white" />
+                </div>
                 <div>
-                  <h3 className="font-semibold text-lg text-foreground">💰 Budget/Price</h3>
-                  <p className="text-muted-foreground text-sm">Find hostels that fit your budget perfectly</p>
+                  <h3 className="font-bold text-xl text-foreground flex items-center gap-2">
+                    💰 Budget/Price
+                  </h3>
+                  <p className="text-muted-foreground">Find hostels that fit your budget perfectly</p>
                 </div>
               </div>
               
-              <div className="flex items-start gap-4 p-4 bg-background rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                <Home className="h-8 w-8 text-primary flex-shrink-0 mt-1" />
+              <div className="flex items-center gap-4 group cursor-pointer">
+                <div className="bg-gradient-to-br from-blue-400 to-blue-600 rounded-full p-4 flex-shrink-0 group-hover:scale-110 transition-transform">
+                  <Home className="h-7 w-7 text-white" />
+                </div>
                 <div>
-                  <h3 className="font-semibold text-lg text-foreground">🏠 Room Type</h3>
-                  <p className="text-muted-foreground text-sm">Choose from single, double, or shared rooms</p>
+                  <h3 className="font-bold text-xl text-foreground flex items-center gap-2">
+                    🏠 Room Type
+                  </h3>
+                  <p className="text-muted-foreground">Choose from single, double, or shared rooms</p>
                 </div>
               </div>
               
-              <div className="flex items-start gap-4 p-4 bg-background rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                <Users className="h-8 w-8 text-primary flex-shrink-0 mt-1" />
+              <div className="flex items-center gap-4 group cursor-pointer">
+                <div className="bg-gradient-to-br from-purple-400 to-purple-600 rounded-full p-4 flex-shrink-0 group-hover:scale-110 transition-transform">
+                  <Users className="h-7 w-7 text-white" />
+                </div>
                 <div>
-                  <h3 className="font-semibold text-lg text-foreground">👥 Gender</h3>
-                  <p className="text-muted-foreground text-sm">Filter by boys, girls, or co-ed hostels</p>
+                  <h3 className="font-bold text-xl text-foreground flex items-center gap-2">
+                    👥 Gender
+                  </h3>
+                  <p className="text-muted-foreground">Filter by boys, girls, or co-ed hostels</p>
                 </div>
               </div>
               
-              <div className="flex items-start gap-4 p-4 bg-background rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                <MapPin className="h-8 w-8 text-primary flex-shrink-0 mt-1" />
+              <div className="flex items-center gap-4 group cursor-pointer">
+                <div className="bg-gradient-to-br from-orange-400 to-orange-600 rounded-full p-4 flex-shrink-0 group-hover:scale-110 transition-transform">
+                  <MapPin className="h-7 w-7 text-white" />
+                </div>
                 <div>
-                  <h3 className="font-semibold text-lg text-foreground">📍 Location/Distance</h3>
-                  <p className="text-muted-foreground text-sm">Find hostels near your college or preferred area</p>
+                  <h3 className="font-bold text-xl text-foreground flex items-center gap-2">
+                    📍 Location/Distance
+                  </h3>
+                  <p className="text-muted-foreground">Find hostels near your college or preferred area</p>
                 </div>
               </div>
               
-              <div className="flex items-start gap-4 p-4 bg-background rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                <Utensils className="h-8 w-8 text-primary flex-shrink-0 mt-1" />
-                <div>
-                  <h3 className="font-semibold text-lg text-foreground">🍽️ Meal Availability</h3>
-                  <p className="text-muted-foreground text-sm">Check for breakfast, lunch, and dinner options</p>
+              <div className="flex items-center gap-4 group cursor-pointer">
+                <div className="bg-gradient-to-br from-red-400 to-red-600 rounded-full p-4 flex-shrink-0 group-hover:scale-110 transition-transform">
+                  <Utensils className="h-7 w-7 text-white" />
                 </div>
+                <div>
+                  <h3 className="font-bold text-xl text-foreground flex items-center gap-2">
+                    🍽️ Meal Availability
+                  </h3>
+                  <p className="text-muted-foreground">Check for breakfast, lunch, and dinner options</p>
+                </div>
+              </div>
+              
+              <div className="pt-6 flex justify-center">
+                <Link to="/hostels">
+                  <Button size="lg" className="gap-2 px-8 py-6 text-lg rounded-full shadow-lg hover:shadow-xl transition-all">
+                    <Search className="h-5 w-5" />
+                    Try the Filters: Search for Hostels
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
