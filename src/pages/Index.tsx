@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { mockHostels } from "@/data/mockHostels";
 import { ArrowRight, Shield, Search, Star, DollarSign, Home, Users, MapPin, Utensils } from "lucide-react";
 import featurePic from "@/assets/feature-pic.jpg";
+import studentBg from "@/assets/student-bg.jpg";
 
 const Index = () => {
   const featuredHostels = mockHostels.slice(0, 3);
@@ -18,8 +19,16 @@ const Index = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative py-20 px-4 bg-gradient-hero overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii4xIi8+PC9nPjwvc3ZnPg==')] opacity-20"></div>
+      <section 
+        className="relative py-20 px-4 overflow-hidden"
+        style={{
+          backgroundImage: `url(${studentBg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
+        <div className="absolute inset-0 bg-primary/70 backdrop-blur-sm"></div>
         
         <div className="container mx-auto relative z-10">
           <div className="text-center space-y-6 mb-10">
