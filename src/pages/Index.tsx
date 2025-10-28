@@ -28,7 +28,7 @@ const Index = () => {
           backgroundRepeat: 'no-repeat'
         }}
       >
-        <div className="absolute inset-0 bg-primary/70 backdrop-blur-sm"></div>
+        <div className="absolute inset-0 bg-black/30"></div>
         
         <div className="container mx-auto relative z-10">
           <div className="text-center space-y-6 mb-10">
