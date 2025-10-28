@@ -6,7 +6,8 @@ import HostelCard from "@/components/HostelCard";
 import ThreeBackground from "@/components/ThreeBackground";
 import { Button } from "@/components/ui/button";
 import { mockHostels } from "@/data/mockHostels";
-import { ArrowRight, Shield, Search, Star } from "lucide-react";
+import { ArrowRight, Shield, Search, Star, DollarSign, Home, Users, MapPin, Utensils } from "lucide-react";
+import featurePic from "@/assets/feature-pic.jpg";
 
 const Index = () => {
   const featuredHostels = mockHostels.slice(0, 3);
@@ -72,6 +73,69 @@ const Index = () => {
             {featuredHostels.map((hostel) => (
               <HostelCard key={hostel.id} hostel={hostel} />
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Special Filters Section */}
+      <section className="py-16 px-4 bg-muted/50">
+        <div className="container mx-auto">
+          <h2 className="text-3xl font-bold text-foreground text-center mb-12">
+            We created special filters for you!
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center max-w-5xl mx-auto">
+            {/* Image Column */}
+            <div className="flex justify-center">
+              <img 
+                src={featurePic} 
+                alt="Hostel accommodation" 
+                className="rounded-lg shadow-lg w-full max-w-md"
+              />
+            </div>
+            
+            {/* Features Column */}
+            <div className="space-y-6">
+              <div className="flex items-start gap-4 p-4 bg-background rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <DollarSign className="h-8 w-8 text-primary flex-shrink-0 mt-1" />
+                <div>
+                  <h3 className="font-semibold text-lg text-foreground">💰 Budget/Price</h3>
+                  <p className="text-muted-foreground text-sm">Find hostels that fit your budget perfectly</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4 p-4 bg-background rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <Home className="h-8 w-8 text-primary flex-shrink-0 mt-1" />
+                <div>
+                  <h3 className="font-semibold text-lg text-foreground">🏠 Room Type</h3>
+                  <p className="text-muted-foreground text-sm">Choose from single, double, or shared rooms</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4 p-4 bg-background rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <Users className="h-8 w-8 text-primary flex-shrink-0 mt-1" />
+                <div>
+                  <h3 className="font-semibold text-lg text-foreground">👥 Gender</h3>
+                  <p className="text-muted-foreground text-sm">Filter by boys, girls, or co-ed hostels</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4 p-4 bg-background rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <MapPin className="h-8 w-8 text-primary flex-shrink-0 mt-1" />
+                <div>
+                  <h3 className="font-semibold text-lg text-foreground">📍 Location/Distance</h3>
+                  <p className="text-muted-foreground text-sm">Find hostels near your college or preferred area</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4 p-4 bg-background rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <Utensils className="h-8 w-8 text-primary flex-shrink-0 mt-1" />
+                <div>
+                  <h3 className="font-semibold text-lg text-foreground">🍽️ Meal Availability</h3>
+                  <p className="text-muted-foreground text-sm">Check for breakfast, lunch, and dinner options</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
