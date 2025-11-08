@@ -32,10 +32,10 @@ const Index = () => {
         
         <div className="container mx-auto relative z-10">
           <div className="text-center space-y-6 mb-10">
-            <h1 className="text-4xl md:text-6xl font-bold text-white">
+            <h1 className="text-4xl md:text-6xl font-bold text-foreground">
               Find Your Perfect Hostel
             </h1>
-            <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-foreground/80 max-w-2xl mx-auto">
               Discover safe, affordable, and student-friendly accommodations near your college
             </p>
           </div>
@@ -43,20 +43,20 @@ const Index = () => {
           <SearchBar />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 max-w-4xl mx-auto">
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center text-white">
-              <Shield className="h-12 w-12 mx-auto mb-3" />
-              <h3 className="font-semibold text-lg mb-2">Verified Hostels</h3>
-              <p className="text-sm text-white/80">All listings are verified for your safety</p>
+            <div className="bg-card/80 backdrop-blur-sm rounded-lg p-6 text-center border border-border/50">
+              <Shield className="h-12 w-12 mx-auto mb-3 text-primary" />
+              <h3 className="font-semibold text-lg mb-2 text-foreground">Verified Hostels</h3>
+              <p className="text-sm text-muted-foreground">All listings are verified for your safety</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center text-white">
-              <Search className="h-12 w-12 mx-auto mb-3" />
-              <h3 className="font-semibold text-lg mb-2">Easy Search</h3>
-              <p className="text-sm text-white/80">Find hostels by location or college</p>
+            <div className="bg-card/80 backdrop-blur-sm rounded-lg p-6 text-center border border-border/50">
+              <Search className="h-12 w-12 mx-auto mb-3 text-primary" />
+              <h3 className="font-semibold text-lg mb-2 text-foreground">Easy Search</h3>
+              <p className="text-sm text-muted-foreground">Find hostels by location or college</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center text-white">
-              <Star className="h-12 w-12 mx-auto mb-3" />
-              <h3 className="font-semibold text-lg mb-2">Best Prices</h3>
-              <p className="text-sm text-white/80">Affordable options for every budget</p>
+            <div className="bg-card/80 backdrop-blur-sm rounded-lg p-6 text-center border border-border/50">
+              <Star className="h-12 w-12 mx-auto mb-3 text-primary" />
+              <h3 className="font-semibold text-lg mb-2 text-foreground">Best Prices</h3>
+              <p className="text-sm text-muted-foreground">Affordable options for every budget</p>
             </div>
           </div>
         </div>
