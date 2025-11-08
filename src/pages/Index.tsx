@@ -63,7 +63,7 @@ const Index = () => {
       </section>
 
       {/* Featured Hostels Section */}
-      <section className="py-16 px-4">
+      <section className="py-16 px-4 bg-gradient-to-br from-background via-muted/30 to-background">
         <div className="container mx-auto">
           <div className="flex justify-between items-center mb-8">
             <div>
