@@ -20,7 +20,7 @@ const Index = () => {
 
       {/* Hero Section */}
       <section 
-        className="relative py-20 px-4 overflow-hidden"
+        className="relative py-20 px-4 overflow-hidden bg-gradient-to-br from-background via-muted/30 to-background"
         style={{
           backgroundImage: `url(${studentBg})`,
           backgroundSize: 'cover',
@@ -28,7 +28,7 @@ const Index = () => {
           backgroundRepeat: 'no-repeat'
         }}
       >
-        <div className="absolute inset-0 bg-black/30"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-background/80 via-muted/50 to-background/80"></div>
         
         <div className="container mx-auto relative z-10">
           <div className="text-center space-y-6 mb-10">
