@@ -14,7 +14,7 @@ const Index = () => {
   const featuredHostels = mockHostels.slice(0, 3);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-muted/30 to-background">
       <ThreeBackground />
       <Navbar />
 
@@ -63,7 +63,7 @@ const Index = () => {
       </section>
 
       {/* Featured Hostels Section */}
-      <section className="py-16 px-4 bg-gradient-to-br from-background via-muted/30 to-background">
+      <section className="py-16 px-4">
         <div className="container mx-auto">
           <div className="flex justify-between items-center mb-8">
             <div>
@@ -87,7 +87,7 @@ const Index = () => {
       </section>
 
       {/* Special Filters Section */}
-      <section className="py-20 px-4 bg-gradient-to-br from-background via-muted/30 to-background">
+      <section className="py-20 px-4">
         <div className="container mx-auto">
           <div className="text-center mb-4">
             <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-3">
