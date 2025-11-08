@@ -32,7 +32,7 @@ const Index = () => {
         
         <div className="container mx-auto relative z-10">
           <div className="text-center space-y-6 mb-10">
-            <h1 className="text-4xl md:text-6xl font-bold text-foreground">
+            <h1 className="text-4xl md:text-6xl font-bold text-primary">
               Find Your Perfect Hostel
             </h1>
             <p className="text-lg md:text-xl text-foreground/80 max-w-2xl mx-auto">
