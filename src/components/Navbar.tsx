@@ -1,11 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Building2, User, LogOut } from "lucide-react";
+import { Building2, User, LogOut, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 
 const Navbar = () => {
-  const { user, signOut } = useAuth();
+  const { user, role, signOut } = useAuth();
   const navigate = useNavigate();
 
   const handleAuthClick = async () => {
@@ -39,6 +39,12 @@ const Navbar = () => {
             <Link to="/add-hostel" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
               Add Hostel
             </Link>
+            {role === "admin" && (
+              <Link to="/admin" className="text-sm font-medium text-primary hover:text-primary/80 transition-colors flex items-center gap-1">
+                <Shield className="h-4 w-4" />
+                Admin
+              </Link>
+            )}
           </div>
 
           <Button variant="default" size="sm" className="gap-2" onClick={handleAuthClick}>
