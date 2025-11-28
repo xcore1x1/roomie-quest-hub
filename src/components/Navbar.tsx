@@ -2,14 +2,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { Building2, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
 
 const Navbar = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
-  const handleAuthClick = () => {
+  const handleAuthClick = async () => {
     if (user) {
-      signOut();
+      await signOut();
+      toast.success("Logged out successfully");
+      navigate("/");
     } else {
       navigate("/login");
     }
