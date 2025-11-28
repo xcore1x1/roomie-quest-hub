@@ -1,3 +1,7 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -9,13 +13,73 @@ import { Building2 } from "lucide-react";
 import { toast } from "sonner";
 
 const AddHostel = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  
+  const [formData, setFormData] = useState({
+    name: "",
+    city: "",
+    gender_type: "",
+    address: "",
+    price: "",
+    description: "",
+    owner_contact: "",
+    owner_name: "",
+  });
+  
+  const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
   const facilities = ["WiFi", "Parking", "Meals", "Security", "Laundry", "Gym"];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleFacilityChange = (facility: string, checked: boolean) => {
+    if (checked) {
+      setSelectedFacilities([...selectedFacilities, facility]);
+    } else {
+      setSelectedFacilities(selectedFacilities.filter(f => f !== facility));
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Hostel submitted for review!", {
-      description: "Our team will verify and approve your listing soon.",
+    
+    if (!user) {
+      toast.error("Please login to add a hostel");
+      navigate("/login");
+      return;
+    }
+
+    if (!formData.gender_type) {
+      toast.error("Please select a gender type");
+      return;
+    }
+
+    setLoading(true);
+
+    const { error } = await supabase.from("hostels").insert({
+      name: formData.name,
+      city: formData.city,
+      gender_type: formData.gender_type,
+      address: formData.address,
+      price: parseFloat(formData.price),
+      description: formData.description,
+      owner_contact: formData.owner_contact,
+      owner_name: formData.owner_name,
+      owner_id: user.id,
+      facilities: selectedFacilities,
+      verified: false,
     });
+
+    setLoading(false);
+
+    if (error) {
+      console.error("Error adding hostel:", error);
+      toast.error("Failed to submit hostel. Please try again.");
+    } else {
+      toast.success("Hostel submitted for review!", {
+        description: "Our team will verify and approve your listing soon.",
+      });
+      navigate("/hostels");
+    }
   };
 
   return (
@@ -37,17 +101,30 @@ const AddHostel = () => {
           <form onSubmit={handleSubmit} className="bg-card rounded-lg border border-border p-8 space-y-6">
             <div className="space-y-2">
               <label className="text-sm font-medium">Hostel Name *</label>
-              <Input placeholder="Enter hostel name" required />
+              <Input 
+                placeholder="Enter hostel name" 
+                required 
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label className="text-sm font-medium">City *</label>
-                <Input placeholder="Enter city" required />
+                <Input 
+                  placeholder="Enter city" 
+                  required 
+                  value={formData.city}
+                  onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">Gender Type *</label>
-                <Select required>
+                <Select 
+                  value={formData.gender_type}
+                  onValueChange={(value) => setFormData({ ...formData, gender_type: value })}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select type" />
                   </SelectTrigger>
@@ -66,12 +143,21 @@ const AddHostel = () => {
                 placeholder="Enter complete address with landmarks"
                 rows={3}
                 required
+                value={formData.address}
+                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
               />
             </div>
 
             <div className="space-y-2">
               <label className="text-sm font-medium">Price per Month (₹) *</label>
-              <Input type="number" placeholder="Enter price" min="0" required />
+              <Input 
+                type="number" 
+                placeholder="Enter price" 
+                min="0" 
+                required 
+                value={formData.price}
+                onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+              />
             </div>
 
             <div className="space-y-2">
@@ -80,6 +166,8 @@ const AddHostel = () => {
                 placeholder="Describe your hostel, nearby colleges, and other details"
                 rows={4}
                 required
+                value={formData.description}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               />
             </div>
 
@@ -88,7 +176,11 @@ const AddHostel = () => {
               <div className="grid grid-cols-2 gap-3">
                 {facilities.map((facility) => (
                   <div key={facility} className="flex items-center space-x-2">
-                    <Checkbox id={facility} />
+                    <Checkbox 
+                      id={facility} 
+                      checked={selectedFacilities.includes(facility)}
+                      onCheckedChange={(checked) => handleFacilityChange(facility, checked as boolean)}
+                    />
                     <label htmlFor={facility} className="text-sm cursor-pointer">
                       {facility}
                     </label>
@@ -98,26 +190,29 @@ const AddHostel = () => {
             </div>
 
             <div className="space-y-2">
+              <label className="text-sm font-medium">Owner Name *</label>
+              <Input 
+                placeholder="Enter owner name" 
+                required 
+                value={formData.owner_name}
+                onChange={(e) => setFormData({ ...formData, owner_name: e.target.value })}
+              />
+            </div>
+
+            <div className="space-y-2">
               <label className="text-sm font-medium">Owner Contact Number *</label>
-              <Input type="tel" placeholder="+91 98765 43210" required />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Owner Email *</label>
-              <Input type="email" placeholder="owner@example.com" required />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Upload Images</label>
-              <Input type="file" accept="image/*" multiple />
-              <p className="text-xs text-muted-foreground">
-                Upload up to 5 images of your hostel
-              </p>
+              <Input 
+                type="tel" 
+                placeholder="+91 98765 43210" 
+                required 
+                value={formData.owner_contact}
+                onChange={(e) => setFormData({ ...formData, owner_contact: e.target.value })}
+              />
             </div>
 
             <div className="pt-4 border-t border-border">
-              <Button type="submit" size="lg" className="w-full">
-                Submit Hostel for Review
+              <Button type="submit" size="lg" className="w-full" disabled={loading}>
+                {loading ? "Submitting..." : "Submit Hostel for Review"}
               </Button>
               <p className="text-xs text-center text-muted-foreground mt-3">
                 Your listing will be reviewed and approved within 24-48 hours
