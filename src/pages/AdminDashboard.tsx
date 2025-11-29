@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Shield, Building2, Users, CheckCircle, Clock, XCircle } from "lucide-react";
+import { Shield, Building2, CheckCircle, Clock, XCircle } from "lucide-react";
 import { toast } from "sonner";
 
 interface Hostel {
@@ -22,6 +22,8 @@ interface Hostel {
   owner_contact: string | null;
   verified: boolean;
   created_at: string;
+  images: string[] | null;
+  facilities: string[] | null;
 }
 
 const AdminDashboard = () => {
@@ -159,50 +161,70 @@ const AdminDashboard = () => {
             ) : pendingHostels.length === 0 ? (
               <p className="text-muted-foreground text-center py-8">No pending hostels to approve</p>
             ) : (
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Name</TableHead>
-                      <TableHead>City</TableHead>
-                      <TableHead>Price</TableHead>
-                      <TableHead>Owner</TableHead>
-                      <TableHead>Contact</TableHead>
-                      <TableHead>Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {pendingHostels.map((hostel) => (
-                      <TableRow key={hostel.id}>
-                        <TableCell className="font-medium">{hostel.name}</TableCell>
-                        <TableCell>{hostel.city}</TableCell>
-                        <TableCell>₹{hostel.price}/month</TableCell>
-                        <TableCell>{hostel.owner_name || "N/A"}</TableCell>
-                        <TableCell>{hostel.owner_contact || "N/A"}</TableCell>
-                        <TableCell>
-                          <div className="flex gap-2">
-                            <Button
-                              size="sm"
-                              onClick={() => handleApprove(hostel.id)}
-                              className="bg-green-600 hover:bg-green-700"
-                            >
-                              <CheckCircle className="h-4 w-4 mr-1" />
-                              Approve
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="destructive"
-                              onClick={() => handleReject(hostel.id)}
-                            >
-                              <XCircle className="h-4 w-4 mr-1" />
-                              Reject
-                            </Button>
+              <div className="space-y-6">
+                {pendingHostels.map((hostel) => (
+                  <div key={hostel.id} className="border border-border rounded-lg p-4">
+                    <div className="flex flex-col lg:flex-row gap-4">
+                      {/* Images */}
+                      <div className="flex gap-2 flex-wrap lg:w-1/3">
+                        {hostel.images && hostel.images.length > 0 ? (
+                          hostel.images.slice(0, 3).map((img, idx) => (
+                            <img
+                              key={idx}
+                              src={img}
+                              alt={`${hostel.name} - ${idx + 1}`}
+                              className="w-24 h-24 object-cover rounded-md border"
+                            />
+                          ))
+                        ) : (
+                          <div className="w-24 h-24 bg-muted rounded-md flex items-center justify-center text-muted-foreground text-xs">
+                            No images
                           </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                        )}
+                      </div>
+
+                      {/* Details */}
+                      <div className="flex-1 space-y-2">
+                        <h3 className="font-semibold text-lg">{hostel.name}</h3>
+                        <p className="text-sm text-muted-foreground">{hostel.address}, {hostel.city}</p>
+                        <div className="flex flex-wrap gap-2 text-sm">
+                          <Badge variant="outline">{hostel.gender_type}</Badge>
+                          <Badge variant="secondary">₹{hostel.price}/month</Badge>
+                        </div>
+                        {hostel.facilities && hostel.facilities.length > 0 && (
+                          <div className="flex flex-wrap gap-1">
+                            {hostel.facilities.map((f) => (
+                              <span key={f} className="text-xs bg-muted px-2 py-1 rounded">{f}</span>
+                            ))}
+                          </div>
+                        )}
+                        <p className="text-sm">
+                          <span className="text-muted-foreground">Owner:</span> {hostel.owner_name || "N/A"} | {hostel.owner_contact || "N/A"}
+                        </p>
+                      </div>
+
+                      {/* Actions */}
+                      <div className="flex lg:flex-col gap-2 lg:justify-center">
+                        <Button
+                          size="sm"
+                          onClick={() => handleApprove(hostel.id)}
+                          className="bg-green-600 hover:bg-green-700"
+                        >
+                          <CheckCircle className="h-4 w-4 mr-1" />
+                          Approve
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => handleReject(hostel.id)}
+                        >
+                          <XCircle className="h-4 w-4 mr-1" />
+                          Reject
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
           </CardContent>
@@ -227,6 +249,7 @@ const AdminDashboard = () => {
                 <Table>
                   <TableHeader>
                     <TableRow>
+                      <TableHead>Image</TableHead>
                       <TableHead>Name</TableHead>
                       <TableHead>City</TableHead>
                       <TableHead>Price</TableHead>
@@ -237,6 +260,19 @@ const AdminDashboard = () => {
                   <TableBody>
                     {approvedHostels.map((hostel) => (
                       <TableRow key={hostel.id}>
+                        <TableCell>
+                          {hostel.images && hostel.images[0] ? (
+                            <img
+                              src={hostel.images[0]}
+                              alt={hostel.name}
+                              className="w-12 h-12 object-cover rounded"
+                            />
+                          ) : (
+                            <div className="w-12 h-12 bg-muted rounded flex items-center justify-center text-xs text-muted-foreground">
+                              N/A
+                            </div>
+                          )}
+                        </TableCell>
                         <TableCell className="font-medium">{hostel.name}</TableCell>
                         <TableCell>{hostel.city}</TableCell>
                         <TableCell>₹{hostel.price}/month</TableCell>
