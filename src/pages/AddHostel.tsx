@@ -9,13 +9,16 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Building2 } from "lucide-react";
+import { Building2, Upload, X, ImageIcon } from "lucide-react";
 import { toast } from "sonner";
 
 const AddHostel = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [uploadingImages, setUploadingImages] = useState(false);
+  const [images, setImages] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   
   const [formData, setFormData] = useState({
     name: "",
@@ -39,6 +42,67 @@ const AddHostel = () => {
     }
   };
 
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    const newFiles = Array.from(files).slice(0, 5 - images.length);
+    
+    if (images.length + newFiles.length > 5) {
+      toast.error("Maximum 5 images allowed");
+      return;
+    }
+
+    setImages([...images, ...newFiles]);
+    
+    // Create previews
+    newFiles.forEach(file => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreviews(prev => [...prev, reader.result as string]);
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const removeImage = (index: number) => {
+    setImages(images.filter((_, i) => i !== index));
+    setImagePreviews(imagePreviews.filter((_, i) => i !== index));
+  };
+
+  const uploadImages = async (): Promise<string[]> => {
+    if (!user || images.length === 0) return [];
+    
+    setUploadingImages(true);
+    const uploadedUrls: string[] = [];
+
+    try {
+      for (const image of images) {
+        const fileExt = image.name.split('.').pop();
+        const fileName = `${user.id}/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+        
+        const { error: uploadError, data } = await supabase.storage
+          .from('hostel-images')
+          .upload(fileName, image);
+
+        if (uploadError) {
+          console.error("Upload error:", uploadError);
+          throw uploadError;
+        }
+
+        const { data: urlData } = supabase.storage
+          .from('hostel-images')
+          .getPublicUrl(fileName);
+
+        uploadedUrls.push(urlData.publicUrl);
+      }
+    } finally {
+      setUploadingImages(false);
+    }
+
+    return uploadedUrls;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -55,30 +119,39 @@ const AddHostel = () => {
 
     setLoading(true);
 
-    const { error } = await supabase.from("hostels").insert({
-      name: formData.name,
-      city: formData.city,
-      gender_type: formData.gender_type,
-      address: formData.address,
-      price: parseFloat(formData.price),
-      description: formData.description,
-      owner_contact: formData.owner_contact,
-      owner_name: formData.owner_name,
-      owner_id: user.id,
-      facilities: selectedFacilities,
-      verified: false,
-    });
+    try {
+      // Upload images first
+      const imageUrls = await uploadImages();
 
-    setLoading(false);
-
-    if (error) {
-      console.error("Error adding hostel:", error);
-      toast.error("Failed to submit hostel. Please try again.");
-    } else {
-      toast.success("Hostel submitted for review!", {
-        description: "Our team will verify and approve your listing soon.",
+      const { error } = await supabase.from("hostels").insert({
+        name: formData.name,
+        city: formData.city,
+        gender_type: formData.gender_type,
+        address: formData.address,
+        price: parseFloat(formData.price),
+        description: formData.description,
+        owner_contact: formData.owner_contact,
+        owner_name: formData.owner_name,
+        owner_id: user.id,
+        facilities: selectedFacilities,
+        images: imageUrls,
+        verified: false,
       });
-      navigate("/hostels");
+
+      if (error) {
+        console.error("Error adding hostel:", error);
+        toast.error("Failed to submit hostel. Please try again.");
+      } else {
+        toast.success("Hostel submitted for review!", {
+          description: "Our team will verify and approve your listing soon.",
+        });
+        navigate("/hostels");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("Failed to submit hostel. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -129,9 +202,9 @@ const AddHostel = () => {
                     <SelectValue placeholder="Select type" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Boys">Boys</SelectItem>
-                    <SelectItem value="Girls">Girls</SelectItem>
-                    <SelectItem value="Co-ed">Co-ed</SelectItem>
+                    <SelectItem value="boys">Boys</SelectItem>
+                    <SelectItem value="girls">Girls</SelectItem>
+                    <SelectItem value="co-ed">Co-ed</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -169,6 +242,56 @@ const AddHostel = () => {
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               />
+            </div>
+
+            {/* Image Upload Section */}
+            <div className="space-y-3">
+              <label className="text-sm font-medium">Hostel Images (Max 5)</label>
+              <div className="border-2 border-dashed border-border rounded-lg p-6">
+                {imagePreviews.length > 0 ? (
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+                    {imagePreviews.map((preview, index) => (
+                      <div key={index} className="relative group">
+                        <img
+                          src={preview}
+                          alt={`Preview ${index + 1}`}
+                          className="w-full h-24 object-cover rounded-lg"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeImage(index)}
+                          className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center py-4">
+                    <ImageIcon className="h-12 w-12 text-muted-foreground mb-2" />
+                    <p className="text-sm text-muted-foreground">No images selected</p>
+                  </div>
+                )}
+                
+                {images.length < 5 && (
+                  <div className="flex justify-center">
+                    <label className="cursor-pointer">
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        onChange={handleImageSelect}
+                        className="hidden"
+                      />
+                      <div className="flex items-center gap-2 px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/80 transition-colors">
+                        <Upload className="h-4 w-4" />
+                        <span className="text-sm">Add Images</span>
+                      </div>
+                    </label>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="space-y-3">
@@ -211,8 +334,8 @@ const AddHostel = () => {
             </div>
 
             <div className="pt-4 border-t border-border">
-              <Button type="submit" size="lg" className="w-full" disabled={loading}>
-                {loading ? "Submitting..." : "Submit Hostel for Review"}
+              <Button type="submit" size="lg" className="w-full" disabled={loading || uploadingImages}>
+                {loading || uploadingImages ? "Submitting..." : "Submit Hostel for Review"}
               </Button>
               <p className="text-xs text-center text-muted-foreground mt-3">
                 Your listing will be reviewed and approved within 24-48 hours
