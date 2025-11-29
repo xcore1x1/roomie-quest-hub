@@ -8,31 +8,66 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
-import { mockHostels } from "@/data/mockHostels";
-import { Search, SlidersHorizontal } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { Search, SlidersHorizontal, Loader2 } from "lucide-react";
+
+interface HostelData {
+  id: string;
+  name: string;
+  city: string;
+  address: string;
+  price: number;
+  images: string[] | null;
+  gender_type: string;
+  facilities: string[] | null;
+  verified: boolean;
+  description: string | null;
+}
 
 const Hostels = () => {
   const [searchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "");
   const [genderFilter, setGenderFilter] = useState<string>("all");
-  const [priceRange, setPriceRange] = useState([5000, 10000]);
+  const [priceRange, setPriceRange] = useState([3000, 15000]);
   const [facilities, setFacilities] = useState<string[]>([]);
   const [showFilters, setShowFilters] = useState(false);
+  const [hostels, setHostels] = useState<HostelData[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const allFacilities = ["WiFi", "Parking", "Meals", "Security", "Laundry", "Gym"];
 
-  const filteredHostels = mockHostels.filter((hostel) => {
+  useEffect(() => {
+    fetchHostels();
+  }, []);
+
+  const fetchHostels = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("hostels")
+      .select("*")
+      .eq("verified", true)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("Error fetching hostels:", error);
+    } else {
+      setHostels(data || []);
+    }
+    setLoading(false);
+  };
+
+  const filteredHostels = hostels.filter((hostel) => {
     const matchesSearch =
       searchQuery === "" ||
       hostel.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       hostel.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
       hostel.address.toLowerCase().includes(searchQuery.toLowerCase());
 
-    const matchesGender = genderFilter === "all" || hostel.genderType === genderFilter;
+    const matchesGender = genderFilter === "all" || hostel.gender_type === genderFilter;
     const matchesPrice = hostel.price >= priceRange[0] && hostel.price <= priceRange[1];
     const matchesFacilities =
       facilities.length === 0 ||
-      facilities.every((facility) => hostel.facilities.includes(facility));
+      facilities.every((facility) => hostel.facilities?.includes(facility));
 
     return matchesSearch && matchesGender && matchesPrice && matchesFacilities;
   });
@@ -43,6 +78,20 @@ const Hostels = () => {
     );
   };
 
+  // Transform database hostel to HostelCard format
+  const transformHostel = (hostel: HostelData) => ({
+    id: hostel.id,
+    name: hostel.name,
+    city: hostel.city,
+    address: hostel.address,
+    price: hostel.price,
+    image: hostel.images?.[0] || "/placeholder.svg",
+    genderType: hostel.gender_type as "Boys" | "Girls" | "Co-ed",
+    facilities: hostel.facilities || [],
+    verified: hostel.verified,
+    description: hostel.description || "",
+  });
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -50,7 +99,7 @@ const Hostels = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">Find Your Hostel</h1>
-          <p className="text-muted-foreground">Browse through {mockHostels.length} available hostels</p>
+          <p className="text-muted-foreground">Browse through {hostels.length} available hostels</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
@@ -64,8 +113,9 @@ const Hostels = () => {
                   size="sm"
                   onClick={() => {
                     setGenderFilter("all");
-                    setPriceRange([5000, 10000]);
+                    setPriceRange([3000, 15000]);
                     setFacilities([]);
+                    setSearchQuery("");
                   }}
                 >
                   Clear All
@@ -96,9 +146,9 @@ const Hostels = () => {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All</SelectItem>
-                      <SelectItem value="Boys">Boys</SelectItem>
-                      <SelectItem value="Girls">Girls</SelectItem>
-                      <SelectItem value="Co-ed">Co-ed</SelectItem>
+                      <SelectItem value="boys">Boys</SelectItem>
+                      <SelectItem value="girls">Girls</SelectItem>
+                      <SelectItem value="co-ed">Co-ed</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -147,7 +197,7 @@ const Hostels = () => {
           <div className="lg:col-span-3">
             <div className="mb-4 flex items-center justify-between">
               <p className="text-sm text-muted-foreground">
-                Showing {filteredHostels.length} of {mockHostels.length} hostels
+                Showing {filteredHostels.length} of {hostels.length} hostels
               </p>
               <Button
                 variant="outline"
@@ -160,7 +210,11 @@ const Hostels = () => {
               </Button>
             </div>
 
-            {filteredHostels.length === 0 ? (
+            {loading ? (
+              <div className="flex items-center justify-center py-12">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              </div>
+            ) : filteredHostels.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-lg text-muted-foreground">No hostels found matching your criteria</p>
                 <Button
@@ -169,7 +223,7 @@ const Hostels = () => {
                   onClick={() => {
                     setSearchQuery("");
                     setGenderFilter("all");
-                    setPriceRange([5000, 10000]);
+                    setPriceRange([3000, 15000]);
                     setFacilities([]);
                   }}
                 >
@@ -179,7 +233,7 @@ const Hostels = () => {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {filteredHostels.map((hostel) => (
-                  <HostelCard key={hostel.id} hostel={hostel} />
+                  <HostelCard key={hostel.id} hostel={transformHostel(hostel)} />
                 ))}
               </div>
             )}
