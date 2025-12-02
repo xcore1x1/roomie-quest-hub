@@ -38,6 +38,27 @@ const Hostels = () => {
 
   useEffect(() => {
     fetchHostels();
+
+    // Subscribe to realtime changes for hostels table
+    const channel = supabase
+      .channel('hostels-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'hostels',
+        },
+        () => {
+          // Refetch hostels when any change occurs
+          fetchHostels();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const fetchHostels = async () => {
