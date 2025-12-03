@@ -14,13 +14,13 @@ const Index = () => {
   const featuredHostels = mockHostels.slice(0, 3);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-muted/30 to-background">
+    <div className="min-h-screen flex flex-col bg-background">
       <ThreeBackground />
       <Navbar />
 
       {/* Hero Section */}
       <section 
-        className="relative py-20 px-4 overflow-hidden bg-gradient-to-br from-background via-muted/30 to-background"
+        className="relative py-24 px-4 overflow-hidden"
         style={{
           backgroundImage: `url(${studentBg})`,
           backgroundSize: 'cover',
@@ -28,33 +28,42 @@ const Index = () => {
           backgroundRepeat: 'no-repeat'
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-background/80 via-muted/50 to-background/80"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-secondary/90 via-secondary/80 to-background"></div>
         
         <div className="container mx-auto relative z-10">
-          <div className="text-center space-y-6 mb-10">
-            <h1 className="text-4xl md:text-6xl font-bold bg-gradient-hero bg-clip-text text-transparent">
-              Find Your Perfect Hostel
+          <div className="text-center space-y-6 mb-12">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-primary/20 text-primary text-sm font-medium tracking-wide">
+              Trusted by 10,000+ Students
+            </span>
+            <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight">
+              Find Your Perfect <span className="text-primary">Hostel</span>
             </h1>
-            <p className="text-lg md:text-xl text-foreground/80 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed">
               Discover safe, affordable, and student-friendly accommodations near your college
             </p>
           </div>
 
           <SearchBar />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 max-w-4xl mx-auto">
-            <div className="bg-card/80 backdrop-blur-sm rounded-lg p-6 text-center border border-border/50">
-              <Shield className="h-12 w-12 mx-auto mb-3 text-primary" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 max-w-4xl mx-auto">
+            <div className="bg-card/95 backdrop-blur-md rounded-xl p-6 text-center border border-border shadow-lg hover:shadow-xl transition-shadow">
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary/10 mb-4">
+                <Shield className="h-7 w-7 text-primary" />
+              </div>
               <h3 className="font-semibold text-lg mb-2 text-foreground">Verified Hostels</h3>
               <p className="text-sm text-muted-foreground">All listings are verified for your safety</p>
             </div>
-            <div className="bg-card/80 backdrop-blur-sm rounded-lg p-6 text-center border border-border/50">
-              <Search className="h-12 w-12 mx-auto mb-3 text-primary" />
+            <div className="bg-card/95 backdrop-blur-md rounded-xl p-6 text-center border border-border shadow-lg hover:shadow-xl transition-shadow">
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary/10 mb-4">
+                <Search className="h-7 w-7 text-primary" />
+              </div>
               <h3 className="font-semibold text-lg mb-2 text-foreground">Easy Search</h3>
               <p className="text-sm text-muted-foreground">Find hostels by location or college</p>
             </div>
-            <div className="bg-card/80 backdrop-blur-sm rounded-lg p-6 text-center border border-border/50">
-              <Star className="h-12 w-12 mx-auto mb-3 text-primary" />
+            <div className="bg-card/95 backdrop-blur-md rounded-xl p-6 text-center border border-border shadow-lg hover:shadow-xl transition-shadow">
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary/10 mb-4">
+                <Star className="h-7 w-7 text-primary" />
+              </div>
               <h3 className="font-semibold text-lg mb-2 text-foreground">Best Prices</h3>
               <p className="text-sm text-muted-foreground">Affordable options for every budget</p>
             </div>
@@ -87,11 +96,14 @@ const Index = () => {
       </section>
 
       {/* Special Filters Section */}
-      <section className="py-20 px-4">
+      <section className="py-20 px-4 bg-muted/30">
         <div className="container mx-auto">
           <div className="text-center mb-4">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-accent/10 text-accent text-sm font-medium tracking-wide mb-4">
+              Smart Filters
+            </span>
             <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-3">
-              We created special Filters for YOU
+              We created special Filters for <span className="text-primary">YOU</span>
             </h2>
             <p className="text-lg text-muted-foreground">Made for your kind of trip</p>
           </div>
@@ -102,59 +114,59 @@ const Index = () => {
               <img 
                 src={featurePic} 
                 alt="Hostel accommodation" 
-                className="rounded-2xl shadow-2xl w-full h-full object-cover"
+                className="rounded-2xl shadow-xl w-full h-full object-cover border border-border"
               />
             </div>
             
             {/* Features Column */}
             <div className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="flex flex-col items-start gap-3">
-                  <div className="bg-gradient-to-br from-green-400 to-green-600 rounded-full p-4 flex-shrink-0">
-                    <span className="text-3xl">💰</span>
+                <div className="flex flex-col items-start gap-3 p-4 rounded-xl bg-card border border-border hover:border-primary/30 transition-colors">
+                  <div className="bg-primary/10 rounded-xl p-3 flex-shrink-0">
+                    <DollarSign className="h-6 w-6 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-lg text-foreground mb-1">Budget/Price</h3>
+                    <h3 className="font-semibold text-lg text-foreground mb-1">Budget/Price</h3>
                     <p className="text-sm text-muted-foreground">Find hostels that fit your budget perfectly</p>
                   </div>
                 </div>
                 
-                <div className="flex flex-col items-start gap-3">
-                  <div className="bg-gradient-to-br from-purple-400 to-purple-600 rounded-full p-4 flex-shrink-0">
-                    <span className="text-3xl">👥</span>
+                <div className="flex flex-col items-start gap-3 p-4 rounded-xl bg-card border border-border hover:border-primary/30 transition-colors">
+                  <div className="bg-primary/10 rounded-xl p-3 flex-shrink-0">
+                    <Users className="h-6 w-6 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-lg text-foreground mb-1">Gender</h3>
+                    <h3 className="font-semibold text-lg text-foreground mb-1">Gender</h3>
                     <p className="text-sm text-muted-foreground">Filter by boys, girls, or co-ed hostels</p>
                   </div>
                 </div>
                 
-                <div className="flex flex-col items-start gap-3">
-                  <div className="bg-gradient-to-br from-blue-400 to-blue-600 rounded-full p-4 flex-shrink-0">
-                    <span className="text-3xl">🏠</span>
+                <div className="flex flex-col items-start gap-3 p-4 rounded-xl bg-card border border-border hover:border-primary/30 transition-colors">
+                  <div className="bg-primary/10 rounded-xl p-3 flex-shrink-0">
+                    <Home className="h-6 w-6 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-lg text-foreground mb-1">Room Type</h3>
+                    <h3 className="font-semibold text-lg text-foreground mb-1">Room Type</h3>
                     <p className="text-sm text-muted-foreground">Choose from single, double, or shared rooms</p>
                   </div>
                 </div>
                 
-                <div className="flex flex-col items-start gap-3">
-                  <div className="bg-gradient-to-br from-orange-400 to-orange-600 rounded-full p-4 flex-shrink-0">
-                    <span className="text-3xl">📍</span>
+                <div className="flex flex-col items-start gap-3 p-4 rounded-xl bg-card border border-border hover:border-primary/30 transition-colors">
+                  <div className="bg-primary/10 rounded-xl p-3 flex-shrink-0">
+                    <MapPin className="h-6 w-6 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-lg text-foreground mb-1">Location/Distance</h3>
+                    <h3 className="font-semibold text-lg text-foreground mb-1">Location/Distance</h3>
                     <p className="text-sm text-muted-foreground">Find hostels near your college or preferred area</p>
                   </div>
                 </div>
                 
-                <div className="flex flex-col items-start gap-3 md:col-span-2 md:w-1/2">
-                  <div className="bg-gradient-to-br from-red-400 to-red-600 rounded-full p-4 flex-shrink-0">
-                    <span className="text-3xl">🍽️</span>
+                <div className="flex flex-col items-start gap-3 p-4 rounded-xl bg-card border border-border hover:border-primary/30 transition-colors md:col-span-2 md:w-1/2">
+                  <div className="bg-primary/10 rounded-xl p-3 flex-shrink-0">
+                    <Utensils className="h-6 w-6 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-lg text-foreground mb-1">Meal Availability</h3>
+                    <h3 className="font-semibold text-lg text-foreground mb-1">Meal Availability</h3>
                     <p className="text-sm text-muted-foreground">Check for breakfast, lunch, and dinner options</p>
                   </div>
                 </div>
@@ -162,7 +174,7 @@ const Index = () => {
               
               <div className="pt-4 flex justify-center">
                 <Link to="/hostels">
-                  <Button size="lg" className="gap-2 px-8 py-6 text-lg rounded-full shadow-lg hover:shadow-xl transition-all bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700">
+                  <Button size="lg" className="gap-2 px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all bg-accent hover:bg-accent/90 text-accent-foreground">
                     <Search className="h-5 w-5" />
                     Try the Filters: Search for Hostels
                   </Button>
@@ -174,16 +186,16 @@ const Index = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 px-4 bg-muted">
+      <section className="py-20 px-4 bg-secondary">
         <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold text-foreground mb-4">
+          <h2 className="text-3xl font-bold text-white mb-4">
             Own a Hostel?
           </h2>
-          <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
+          <p className="text-white/70 mb-8 max-w-2xl mx-auto">
             List your hostel on Hostella and reach thousands of students looking for accommodation.
           </p>
           <Link to="/add-hostel">
-            <Button size="lg" className="gap-2">
+            <Button size="lg" className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl shadow-lg">
               Add Your Hostel
               <ArrowRight className="h-5 w-5" />
             </Button>
