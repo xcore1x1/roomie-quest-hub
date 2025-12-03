@@ -7,14 +7,14 @@ const ThreeBackground = () => {
       style={{ pointerEvents: 'none' }}
     >
       <div 
-        className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-secondary/10"
+        className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5"
       />
       <div 
-        className="absolute inset-0 opacity-40"
+        className="absolute inset-0 opacity-20"
         style={{
           backgroundImage: `url(${studentBg})`,
           backgroundRepeat: 'repeat',
-          backgroundSize: '500px auto',
+          backgroundSize: '600px auto',
           backgroundPosition: 'center'
         }}
       />

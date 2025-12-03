@@ -19,35 +19,37 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav className="sticky top-0 z-50 w-full border-b border-border/50 bg-card/95 backdrop-blur-md shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
-          <Link to="/" className="flex items-center space-x-2">
-            <Building2 className="h-6 w-6 text-primary" />
-            <span className="text-xl font-bold bg-gradient-hero bg-clip-text text-transparent">
+          <Link to="/" className="flex items-center space-x-2.5">
+            <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-primary/10">
+              <Building2 className="h-5 w-5 text-primary" />
+            </div>
+            <span className="text-xl font-bold text-foreground">
               Hostella
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center space-x-6">
-            <Link to="/" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
+          <div className="hidden md:flex items-center space-x-1">
+            <Link to="/" className="px-4 py-2 text-sm font-medium text-foreground hover:text-primary hover:bg-muted/50 rounded-lg transition-all">
               Home
             </Link>
-            <Link to="/hostels" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
+            <Link to="/hostels" className="px-4 py-2 text-sm font-medium text-foreground hover:text-primary hover:bg-muted/50 rounded-lg transition-all">
               Find Hostel
             </Link>
-            <Link to="/add-hostel" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
+            <Link to="/add-hostel" className="px-4 py-2 text-sm font-medium text-foreground hover:text-primary hover:bg-muted/50 rounded-lg transition-all">
               Add Hostel
             </Link>
             {role === "admin" && (
-              <Link to="/admin" className="text-sm font-medium text-primary hover:text-primary/80 transition-colors flex items-center gap-1">
+              <Link to="/admin" className="px-4 py-2 text-sm font-medium text-primary hover:bg-primary/10 rounded-lg transition-all flex items-center gap-1.5">
                 <Shield className="h-4 w-4" />
                 Admin
               </Link>
             )}
           </div>
 
-          <Button variant="default" size="sm" className="gap-2" onClick={handleAuthClick}>
+          <Button variant="default" size="sm" className="gap-2 rounded-lg shadow-sm" onClick={handleAuthClick}>
             {user ? (
               <>
                 <LogOut className="h-4 w-4" />
