@@ -1,9 +1,10 @@
 import { useParams, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { mockHostels } from "@/data/mockHostels";
+import { supabase } from "@/integrations/supabase/client";
 import {
   MapPin,
   Phone,
@@ -15,7 +16,23 @@ import {
   Shield,
   ArrowLeft,
   MessageCircle,
+  Loader2,
 } from "lucide-react";
+
+interface HostelData {
+  id: string;
+  name: string;
+  address: string;
+  city: string;
+  price: number;
+  images: string[] | null;
+  gender_type: string;
+  facilities: string[] | null;
+  verified: boolean | null;
+  description: string | null;
+  owner_name: string | null;
+  owner_contact: string | null;
+}
 
 const facilityIcons: Record<string, React.ReactNode> = {
   WiFi: <Wifi className="h-5 w-5" />,
@@ -26,7 +43,41 @@ const facilityIcons: Record<string, React.ReactNode> = {
 
 const HostelDetail = () => {
   const { id } = useParams();
-  const hostel = mockHostels.find((h) => h.id === id);
+  const [hostel, setHostel] = useState<HostelData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchHostel = async () => {
+      if (!id) return;
+      
+      const { data, error } = await supabase
+        .from("hostels")
+        .select("*")
+        .eq("id", id)
+        .maybeSingle();
+
+      if (error) {
+        console.error("Error fetching hostel:", error);
+      } else {
+        setHostel(data);
+      }
+      setLoading(false);
+    };
+
+    fetchHostel();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <div className="flex-1 flex items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!hostel) {
     return (
@@ -46,12 +97,14 @@ const HostelDetail = () => {
   }
 
   const handleContactOwner = () => {
-    // Mock contact - in real app this would open WhatsApp or email
+    const phone = hostel.owner_contact?.replace(/\D/g, "") || "919876543210";
     window.open(
-      `https://wa.me/919876543210?text=Hi, I'm interested in ${hostel.name}`,
+      `https://wa.me/${phone}?text=Hi, I'm interested in ${hostel.name}`,
       "_blank"
     );
   };
+
+  const mainImage = hostel.images?.[0] || "/placeholder.svg";
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -71,13 +124,13 @@ const HostelDetail = () => {
             {/* Image */}
             <div className="relative h-96 rounded-lg overflow-hidden">
               <img
-                src={hostel.image}
+                src={mainImage}
                 alt={hostel.name}
                 className="w-full h-full object-cover"
               />
               <div className="absolute top-4 left-4 flex gap-2">
                 <Badge variant="secondary" className="bg-background/90 backdrop-blur">
-                  {hostel.genderType}
+                  {hostel.gender_type}
                 </Badge>
                 {hostel.verified && (
                   <Badge className="bg-primary/90 backdrop-blur gap-1">
@@ -101,28 +154,28 @@ const HostelDetail = () => {
               <div>
                 <h2 className="text-xl font-semibold mb-3">About</h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  {hostel.description} Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                  Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad 
-                  minim veniam, quis nostrud exercitation ullamco laboris.
+                  {hostel.description || "No description available for this hostel."}
                 </p>
               </div>
 
-              <div>
-                <h2 className="text-xl font-semibold mb-4">Facilities</h2>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {hostel.facilities.map((facility) => (
-                    <div
-                      key={facility}
-                      className="flex items-center gap-3 p-3 bg-muted rounded-lg"
-                    >
-                      <div className="text-primary">
-                        {facilityIcons[facility] || <Check className="h-5 w-5" />}
+              {hostel.facilities && hostel.facilities.length > 0 && (
+                <div>
+                  <h2 className="text-xl font-semibold mb-4">Facilities</h2>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    {hostel.facilities.map((facility) => (
+                      <div
+                        key={facility}
+                        className="flex items-center gap-3 p-3 bg-muted rounded-lg"
+                      >
+                        <div className="text-primary">
+                          {facilityIcons[facility] || <Check className="h-5 w-5" />}
+                        </div>
+                        <span className="font-medium">{facility}</span>
                       </div>
-                      <span className="font-medium">{facility}</span>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               <div>
                 <h2 className="text-xl font-semibold mb-3">Location</h2>
@@ -144,13 +197,16 @@ const HostelDetail = () => {
               <div className="space-y-3">
                 <h3 className="font-semibold">Owner Details</h3>
                 <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-sm">
-                    <Phone className="h-4 w-4 text-muted-foreground" />
-                    <span>+91 98765 43210</span>
-                  </div>
+                  <p className="text-sm font-medium">{hostel.owner_name || "Owner"}</p>
+                  {hostel.owner_contact && (
+                    <div className="flex items-center gap-2 text-sm">
+                      <Phone className="h-4 w-4 text-muted-foreground" />
+                      <span>{hostel.owner_contact}</span>
+                    </div>
+                  )}
                   <div className="flex items-center gap-2 text-sm">
                     <Mail className="h-4 w-4 text-muted-foreground" />
-                    <span>owner@hostella.com</span>
+                    <span>Contact via WhatsApp</span>
                   </div>
                 </div>
               </div>
@@ -165,10 +221,12 @@ const HostelDetail = () => {
               </Button>
 
               <div className="pt-4 border-t border-border space-y-2">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Check className="h-4 w-4 text-primary" />
-                  <span>Verified listing</span>
-                </div>
+                {hostel.verified && (
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Check className="h-4 w-4 text-primary" />
+                    <span>Verified listing</span>
+                  </div>
+                )}
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Check className="h-4 w-4 text-primary" />
                   <span>Quick response</span>
