@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Building2, User, LogOut, Shield } from "lucide-react";
+import { Building2, User, LogOut, Shield, Home, Search, PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -32,13 +32,16 @@ const Navbar = () => {
           </Link>
 
           <div className="hidden md:flex items-center space-x-1">
-            <Link to="/" className="px-4 py-2 text-sm font-medium text-foreground hover:text-primary hover:bg-muted/50 rounded-lg transition-all">
+            <Link to="/" className="px-4 py-2 text-sm font-medium text-foreground hover:text-primary hover:bg-muted/50 rounded-lg transition-all flex items-center gap-1.5">
+              <Home className="h-4 w-4" />
               Home
             </Link>
-            <Link to="/hostels" className="px-4 py-2 text-sm font-medium text-foreground hover:text-primary hover:bg-muted/50 rounded-lg transition-all">
+            <Link to="/hostels" className="px-4 py-2 text-sm font-medium text-foreground hover:text-primary hover:bg-muted/50 rounded-lg transition-all flex items-center gap-1.5">
+              <Search className="h-4 w-4" />
               Find Hostel
             </Link>
-            <Link to="/add-hostel" className="px-4 py-2 text-sm font-medium text-foreground hover:text-primary hover:bg-muted/50 rounded-lg transition-all">
+            <Link to="/add-hostel" className="px-4 py-2 text-sm font-medium text-foreground hover:text-primary hover:bg-muted/50 rounded-lg transition-all flex items-center gap-1.5">
+              <PlusCircle className="h-4 w-4" />
               Add Hostel
             </Link>
             {role === "admin" && (
